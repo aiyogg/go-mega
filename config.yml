@@ -1,0 +1,6 @@
+mysql:
+  charset: utf8
+  db: go-mega
+  host: localhost
+  password: 123@abc
+  user: root
