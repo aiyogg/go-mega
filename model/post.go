@@ -14,6 +14,7 @@ type Post struct {
 // GetPostByUserID 获取用户文章
 func GetPostByUserID(id int) (*[]Post, error) {
 	var posts []Post
+	// Preload 相当于预先 join table，不然取到的 posts 就没有 User 信息
 	if err := db.Preload("User").Where("user_id=?", id).Find(&posts).Error; err != nil {
 		return nil, err
 	}
