@@ -10,7 +10,7 @@ import (
 func main() {
 	log.Println("DB Init ...")
 	db := model.ConnectToDB()
-	defer db.close()
+	defer db.Close()
 	model.SetDB(db)
 
 	db.DropTableIfExists(model.User{}, model.Post{})

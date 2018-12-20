@@ -2,5 +2,6 @@ mysql:
   charset: utf8
   db: go-mega
   host: localhost
+  port: 3306
   password: 123@abc
   user: root

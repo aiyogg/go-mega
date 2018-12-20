@@ -24,13 +24,14 @@ func getConfig(projectName string) {
 	}
 }
 
-// GetMysqlConnectingString func
+// GetMysqlConnectingString 返回数据库连接信息
 func GetMysqlConnectingString() string {
 	usr := viper.GetString("mysql.user")
 	pwd := viper.GetString("mysql.password")
 	host := viper.GetString("mysql.host")
+	port := viper.GetInt("mysql.port")
 	db := viper.GetString("mysql.db")
 	charset := viper.GetString("mysql.charset")
 
-	return fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?charset=%s&parseTime=true", usr, pwd, host, db, charset)
+	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=true", usr, pwd, host, port, db, charset)
 }
