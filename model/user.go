@@ -21,7 +21,7 @@ func (u *User) CheckPassword(password string) bool {
 }
 
 // GetUserByUsername 根据用户名查用户
-func (u *User) GetUserByUsername(username string) (*User, error) {
+func GetUserByUsername(username string) (*User, error) {
 	var user User
 	if err := db.Where("username=?", username).Find(&user).Error; err != nil {
 		return nil, err
