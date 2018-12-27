@@ -11,6 +11,7 @@ type home struct{}
 func (h home) registerRouters() {
 	http.HandleFunc("/", indexHander)
 	http.HandleFunc("/login", loginHander)
+	http.HandleFunc("/logout", logoutHandler)
 }
 
 func indexHander(w http.ResponseWriter, r *http.Request) {
@@ -39,11 +40,21 @@ func loginHander(w http.ResponseWriter, r *http.Request) {
 			v.AddError("username must longer than 6 characters")
 		}
 
+		if !vm.CheckLogin(username, password) {
+			v.AddError("username password not correct, please input agin")
+		}
+
 		if len(v.Errs) > 0 {
 			templates[tpName].Execute(w, &v)
 		} else {
 			// fmt.Fprintf(w, "Username: %s Password: %s", username, password)
+			setSessionUser(w, r, username)
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 		}
 	}
+}
+
+func logoutHandler(w http.ResponseWriter, r *http.Request) {
+	clearSession(w, r)
+	http.Redirect(w, r, "/login", http.StatusTemporaryRedirect)
 }

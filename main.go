@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/dota2mm/go-mega/model"
+	"github.com/gorilla/context"
 	"net/http"
 
 	"github.com/dota2mm/go-mega/controller"
@@ -17,5 +18,5 @@ func main() {
 	// Setup controller
 	controller.Startup()
 
-	http.ListenAndServe(":5000", nil)
+	http.ListenAndServe(":5000", context.ClearHandler(http.DefaultServeMux))
 }
