@@ -9,15 +9,17 @@ import (
 type home struct{}
 
 func (h home) registerRouters() {
-	http.HandleFunc("/", indexHander)
+	http.HandleFunc("/", middleAuth(indexHander))
 	http.HandleFunc("/login", loginHander)
-	http.HandleFunc("/logout", logoutHandler)
+	http.HandleFunc("/logout", middleAuth(logoutHandler))
 }
 
 func indexHander(w http.ResponseWriter, r *http.Request) {
+	tpName := "index.html"
 	vop := vm.IndexViewModelOp{}
-	v := vop.GetVM()
-	templates["index.html"].Execute(w, &v)
+	username, _ := getSessionUser(r)
+	v := vop.GetVM(username)
+	templates[tpName].Execute(w, &v)
 }
 
 func loginHander(w http.ResponseWriter, r *http.Request) {
