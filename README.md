@@ -1,3 +1,5 @@
 ## Go-Mega
 
-A common web project using golang.
+A forum built with golang step by step, Did not use any web framework.
+
+Suitable for novice reference learning.
