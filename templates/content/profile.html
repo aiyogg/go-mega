@@ -1,0 +1,34 @@
+{{define "content"}}
+    <table>
+        <tr valign="top">
+            <td><img src="{{.ProfileUser.Avatar}}&s=128"></td>
+            <td>
+                <h1>User: {{.ProfileUser.Username}}</h1>
+                {{if .ProfileUser.AboutMe}}
+                    <p>{{ .ProfileUser.AboutMe }}</p>
+                {{end}}
+
+                {{if .ProfileUser.LastSeen}}
+                    <p>Last seen on: {{ .ProfileUser.LastSeen }}</p>
+                {{end}}
+
+                {{if .ProfileUser.Editable}}
+                    <p>
+                        <a href="/profile_edit">Edit your profile</a>
+                    </p>
+                {{end}}
+            </td>
+        </tr>
+    </table>
+
+    <hr>
+
+    {{range .Posts}}
+    <table>
+        <tr valign="top">
+            <td><img src="{{.User.Avatar}}&s=36"></td>
+            <td>{{ .User.Username }} says:<br>{{ .Body }}</td>
+        </tr>
+    </table>
+    {{end}}
+{{end}}
