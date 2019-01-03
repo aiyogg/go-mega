@@ -2,6 +2,7 @@ package model
 
 import (
 	"fmt"
+	"log"
 	"time"
 )
 
@@ -33,6 +34,85 @@ func (u *User) SetAvatar(email string) {
 	u.Avatar = fmt.Sprintf("https://www.gravatar.com/avatar/%s?d=identicon", Md5(email))
 }
 
+// Follow 关注
+func (u *User) Follow(username string) error {
+	other, err := GetUserByUsername(username)
+	if err != nil {
+		return err
+	}
+	return db.Model(other).Association("Followers").Append(u).Error
+}
+
+// Unfollow 取消关注
+func (u *User) Unfollow(username string) error {
+	other, err := GetUserByUsername(username)
+	if err != nil {
+		return err
+	}
+	return db.Model(other).Association("Followers").Delete(u).Error
+}
+
+// FollowSelf 关注自己
+func (u *User) FollowSelf() error {
+	return db.Model(u).Association("Followers").Append(u).Error
+}
+
+// FollowersCount 粉丝数
+func (u *User) FollowersCount() int {
+	return db.Model(u).Association("Followers").Count()
+}
+
+// FollowingCount 关注数
+func (u *User) FollowingCount() int {
+	ids := u.FollowingIDs()
+	return len(ids)
+}
+
+// FollowingIDs 粉丝 IDs
+func (u *User) FollowingIDs() []int {
+	var ids []int
+	rows, err := db.Table("follower").Where("follower_id = ?", u.ID).Select("user_id, follower_id").Rows()
+	if err != nil {
+		log.Println("Counting Following error: ", err)
+		return  ids
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var id, followerID int
+		rows.Scan(&id, &followerID)
+		ids = append(ids, id)
+	}
+	return ids
+}
+
+// FollowingPosts
+func (u *User) FollowingPosts() (*[]Post, error) {
+	var posts []Post
+	ids := u.FollowingIDs()
+	if err := db.Preload("User").Order("timestamp desc").Where("user_id in (?)", ids).Find(&posts).Error; err != nil {
+		return nil, err
+	}
+	return &posts, nil
+}
+
+// IsFollowedByUser 是否是粉丝
+func (u *User) IsFollowedByUser(username string) bool {
+	user, _ := GetUserByUsername(username)
+	ids := user.FollowingIDs()
+	for _, id := range ids {
+		if u.ID == id {
+			return true
+		}
+	}
+	return false
+}
+
+// CreatePost 创建新的文章
+func (u *User) CreatePost(body string) error {
+	post := Post{Body: body, UserID: u.ID}
+	return db.Create(&post).Error
+}
+
 // GetUserByUsername 根据用户名查用户
 func GetUserByUsername(username string) (*User, error) {
 	var user User
@@ -46,7 +126,11 @@ func GetUserByUsername(username string) (*User, error) {
 func AddUser(username, password, email string) error {
 	user := User{Username: username, Email: email}
 	user.SetPassword(password)
-	return db.Create(&user).Error
+	user.SetAvatar(email)
+	if err := db.Create(&user).Error; err != nil {
+		return err
+	}
+	return user.FollowSelf()
 }
 
 // UpdateUserByUsername 更新用户信息
