@@ -5,19 +5,25 @@ import "github.com/dota2mm/go-mega/model"
 // IndexViewModel struct
 type IndexViewModel struct {
 	BaseViewModel
-	model.User
 	Posts []model.Post
+	Flash string
 }
 
 // IndexViewModelOp struct
 type IndexViewModelOp struct{}
 
 // GetVM func
-func (IndexViewModelOp) GetVM(username string) IndexViewModel {
-	u1, _ := model.GetUserByUsername(username)
-	posts, _ := model.GetPostByUserID(u1.ID)
+func (IndexViewModelOp) GetVM(username, flash string) IndexViewModel {
+	u, _ := model.GetUserByUsername(username)
+	posts, _ := u.FollowingPosts()
 
-	v := IndexViewModel{BaseViewModel{Title: "Homepage"}, *u1, *posts}
+	v := IndexViewModel{BaseViewModel{Title: "Homepage"}, *posts, flash}
 	v.SetCurrentUser(username)
 	return v
+}
+
+// CreatePost 创建文章
+func CreatePost(username, post string) error {
+	u, _ := model.GetUserByUsername(username)
+	return u.CreatePost(post)
 }
