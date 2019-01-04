@@ -13,7 +13,7 @@ func main() {
 	defer db.Close()
 	model.SetDB(db)
 
-	db.DropTableIfExists(model.User{}, model.Post{})
+	db.DropTableIfExists(model.User{}, model.Post{}, "follower")
 	db.CreateTable(model.User{}, model.Post{})
 
 	model.AddUser("Chuck", "123@abc", "i@chenteng.me")

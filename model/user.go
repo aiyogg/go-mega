@@ -16,7 +16,7 @@ type User struct {
 	AboutMe      string `gorem:"type:varchar(140)"`
 	Avatar       string `gorem:"type:varchar(200)"`
 	Posts        []Post
-	Followers    []*User `gorm:"many2many:followers;association_jointable_foreignkey:follower_id"`
+	Followers    []*User `gorm:"many2many:follower;association_jointable_foreignkey:follower_id"`
 }
 
 // SetPassword 明文密码加密
