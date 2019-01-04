@@ -18,4 +18,11 @@
             </tr>
         </table>
     {{end}}
+
+    {{if gt .PrevPage 0}}
+        <a href="/?page={{.PrevPage}}">Prev</a>
+    {{end}}
+    {{if gt .NextPage 0}}
+        <a href="/?page={{.NextPage}}">Next</a>
+    {{end}}
 {{end}}

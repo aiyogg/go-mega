@@ -113,6 +113,20 @@ func (u *User) CreatePost(body string) error {
 	return db.Create(&post).Error
 }
 
+// FollowingPostsByPageLimit 带分页的文章
+func (u *User) FollowingPostsByPageLimit(page, limit int) (*[]Post, int, error) {
+	var total int
+	var posts []Post
+	offset := (page - 1) * limit
+	ids := u.FollowingIDs()
+	if err := db.Preload("User").Order("timestamp desc").Where("user_id in (?)", ids).Offset(offset).Limit(limit).Find(&posts).Error; err != nil {
+		return nil, total, err
+	}
+	db.Model(&Post{}).Where("user_id in (?)", ids).Count(&total)
+	return &posts, total, nil
+}
+
+
 // GetUserByUsername 根据用户名查用户
 func GetUserByUsername(username string) (*User, error) {
 	var user User

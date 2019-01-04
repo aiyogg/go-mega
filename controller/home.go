@@ -28,11 +28,12 @@ func (h home) registerRouters() {
 func indexHander(w http.ResponseWriter, r *http.Request) {
 	tpName := "index.html"
 	vop := vm.IndexViewModelOp{}
+	page := getPage(r)
 	username, _ := getSessionUser(r)
 
 	if r.Method == http.MethodGet {
 		flash := getFlash(w, r)
-		v := vop.GetVM(username, flash)
+		v := vop.GetVM(username, flash, page, pageLimit)
 		templates[tpName].Execute(w, &v)
 	}
 	if r.Method == http.MethodPost {

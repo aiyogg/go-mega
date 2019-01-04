@@ -11,6 +11,7 @@ var (
 	sessionName    string
 	flashName      string
 	store          *sessions.CookieStore
+	pageLimit      int // 分页限制
 )
 
 func init() {
@@ -18,6 +19,7 @@ func init() {
 	store = sessions.NewCookieStore([]byte("something-very-secret"))
 	sessionName = "go-mega"
 	flashName = "go-flash"
+	pageLimit = 5
 }
 
 // Startup func
