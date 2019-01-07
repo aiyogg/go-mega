@@ -37,4 +37,11 @@
         </tr>
     </table>
     {{end}}
+
+    {{if gt .PrevPage 0}}
+        <a href="/user/{{.ProfileUser.Username}}?page={{.PrevPage}}">Prev</a>
+    {{end}}
+    {{if gt .NextPage 0}}
+        <a href="/user/{{.ProfileUser.Username}}?page={{.NextPage}}">Next</a>
+    {{end}}
 {{end}}

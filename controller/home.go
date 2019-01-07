@@ -131,8 +131,9 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r) // 第三方 package 提供的 api
 	pUser := vars["username"]
 	sUser, _ := getSessionUser(r)
+	page := getPage(r)
 	vop := vm.ProfileViewModelOp{}
-	v, err := vop.GetVM(sUser, pUser)
+	v, err := vop.GetVM(sUser, pUser, page, pageLimit)
 	if err != nil {
 		msg := fmt.Sprintf("User ( %s ) does not exist", pUser)
 		w.Write([]byte(msg))
