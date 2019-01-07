@@ -20,7 +20,8 @@ func (h home) registerRouters() {
 	r.HandleFunc("/user/{username}", middleAuth(profileHandler))
 	r.HandleFunc("/profile_edit", middleAuth(profileEditHandler))
 	r.HandleFunc("/follow/{username}", middleAuth(followHandler))
-	r.HandleFunc("/unfollow/{username}", middleAuth(UnFollowHandler))
+	r.HandleFunc("/unfollow/{username}", middleAuth(unFollowHandler))
+	r.HandleFunc("/explore", exploreHandler)
 
 	http.Handle("/", r)
 }
@@ -181,7 +182,7 @@ func followHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, fmt.Sprintf("/user/%s", pUser), http.StatusSeeOther)
 }
 
-func UnFollowHandler(w http.ResponseWriter, r *http.Request) {
+func unFollowHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	pUser := vars["username"]
 	sUser, _ := getSessionUser(r)
@@ -193,4 +194,13 @@ func UnFollowHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.Redirect(w, r, fmt.Sprintf("/user/%s", pUser), http.StatusSeeOther)
+}
+
+func exploreHandler(w http.ResponseWriter, r *http.Request) {
+	tpName := "explore.html"
+	vop := vm.ExploreViewModelOp{}
+	username, _ := getSessionUser(r)
+	page := getPage(r)
+	v, _ := vop.GetVM(username, page, pageLimit)
+	templates[tpName].Execute(w, &v)
 }

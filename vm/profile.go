@@ -24,7 +24,7 @@ func (ProfileViewModelOp) GetVM(sUser, pUser string, page, limit int) (ProfileVi
 	if err != nil {
 		return v, err
 	}
-	posts, total, _ := model.GetPostByUserIDPageAndLimit(u.ID, page, limit)
+	posts, total, _ := model.GetPostsByUserIDPageAndLimit(u.ID, page, limit)
 	v.ProfileUser = *u
 	v.Editable = (sUser == pUser)
 	v.SetBasePageViewModel(total, page, limit)
