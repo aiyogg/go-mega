@@ -31,7 +31,7 @@ func (u *User) CheckPassword(password string) bool {
 
 // SetAvatar 设置默认头像
 func (u *User) SetAvatar(email string) {
-	u.Avatar = fmt.Sprintf("https://www.gravatar.com/avatar/%s?d=identicon", Md5(email))
+	u.Avatar = fmt.Sprintf("https://www.gravatar.com/avatar/%s?d=retro", Md5(email))
 }
 
 // Follow 关注
@@ -74,7 +74,7 @@ func (u *User) FollowingIDs() []int {
 	rows, err := db.Table("follower").Where("follower_id = ?", u.ID).Select("user_id, follower_id").Rows()
 	if err != nil {
 		log.Println("Counting Following error: ", err)
-		return  ids
+		return ids
 	}
 	defer rows.Close()
 	for rows.Next() {
@@ -85,7 +85,7 @@ func (u *User) FollowingIDs() []int {
 	return ids
 }
 
-// FollowingPosts
+// FollowingPosts 首页文章
 func (u *User) FollowingPosts() (*[]Post, error) {
 	var posts []Post
 	ids := u.FollowingIDs()
@@ -93,6 +93,19 @@ func (u *User) FollowingPosts() (*[]Post, error) {
 		return nil, err
 	}
 	return &posts, nil
+}
+
+// FollowingPostsByPageAndLimit 带分页的文章
+func (u *User) FollowingPostsByPageAndLimit(page, limit int) (*[]Post, int, error) {
+	var total int
+	var posts []Post
+	offset := (page - 1) * limit
+	ids := u.FollowingIDs()
+	if err := db.Preload("User").Order("timestamp desc").Where("user_id in (?)", ids).Offset(offset).Limit(limit).Find(&posts).Error; err != nil {
+		return nil, total, err
+	}
+	db.Model(&Post{}).Where("user_id in (?)", ids).Count(&total)
+	return &posts, total, nil
 }
 
 // IsFollowedByUser 是否是粉丝
@@ -112,20 +125,6 @@ func (u *User) CreatePost(body string) error {
 	post := Post{Body: body, UserID: u.ID}
 	return db.Create(&post).Error
 }
-
-// FollowingPostsByPageLimit 带分页的文章
-func (u *User) FollowingPostsByPageLimit(page, limit int) (*[]Post, int, error) {
-	var total int
-	var posts []Post
-	offset := (page - 1) * limit
-	ids := u.FollowingIDs()
-	if err := db.Preload("User").Order("timestamp desc").Where("user_id in (?)", ids).Offset(offset).Limit(limit).Find(&posts).Error; err != nil {
-		return nil, total, err
-	}
-	db.Model(&Post{}).Where("user_id in (?)", ids).Count(&total)
-	return &posts, total, nil
-}
-
 
 // GetUserByUsername 根据用户名查用户
 func GetUserByUsername(username string) (*User, error) {

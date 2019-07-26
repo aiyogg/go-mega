@@ -34,7 +34,7 @@ func main() {
 	//		Username:     "Chuck",
 	//		PasswordHash: model.GeneratePasswordHash("123@abc"),
 	//		Email:        "i@example.com",
-	//		Avatar:       fmt.Sprintf("https://www.gravatar.com/avatar/%s?d=identicon", model.Md5("i@example.com")),
+	//		Avatar:       fmt.Sprintf("https://www.gravatar.com/avatar/%s?d=retro", model.Md5("i@example.com")),
 	//		Posts: []model.Post{
 	//			{Body: "This my first post.Thank you!"},
 	//		},
@@ -43,7 +43,7 @@ func main() {
 	//		Username:     "Jay",
 	//		PasswordHash: model.GeneratePasswordHash("666@jay"),
 	//		Email:        "666@jay.com",
-	//		Avatar:       fmt.Sprintf("https://www.gravatar.com/avatar/%s?d=identicon", model.Md5("666@jay.com")),
+	//		Avatar:       fmt.Sprintf("https://www.gravatar.com/avatar/%s?d=retro", model.Md5("666@jay.com")),
 	//		Posts: []model.Post{
 	//			{Body: "Hello,I'm Jay Chou!"},
 	//			{Body: "I think Chuck is a good boy!"},
