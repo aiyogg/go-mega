@@ -14,7 +14,7 @@
         <table>
             <tr valign="top">
                 <td><img src="{{.User.Avatar}}&s=36" alt="avatar"></td>
-                <td>{{.User.Username}} says: <br>{{.Body}}</td>
+                <td><a href="/user/{{.User.Username}}">{{.User.Username}}</a> says: <br>{{.Body}}</td>
             </tr>
         </table>
     {{end}}
