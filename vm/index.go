@@ -17,7 +17,7 @@ type IndexViewModelOp struct{}
 // GetVM func
 func (IndexViewModelOp) GetVM(username, flash string, page, limit int) IndexViewModel {
 	u, _ := model.GetUserByUsername(username)
-	posts, total, _ := u.FollowingPostsByPageLimit(page, limit)
+	posts, total, _ := u.FollowingPostsByPageAndLimit(page, limit)
 	v := IndexViewModel{}
 	v.SetTitle("Homepage")
 	v.Posts = *posts

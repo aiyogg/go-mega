@@ -22,6 +22,7 @@ func ConnectToDB() *gorm.DB {
 	if err != nil {
 		panic("Failed to connect database")
 	}
+	db.Set("gorm:table_options", "CHARSET=utf8mb4")
 	db.SingularTable(true)
 	return db
 }
