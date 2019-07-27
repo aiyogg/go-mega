@@ -18,6 +18,7 @@ func SetDB(database *gorm.DB) {
 func ConnectToDB() *gorm.DB {
 	connectingStr := config.GetMysqlConnectingString()
 	log.Println("Connect to db...")
+	log.Printf("DB configuration: %s", connectingStr)
 	db, err := gorm.Open("mysql", connectingStr)
 	if err != nil {
 		panic("Failed to connect database")
