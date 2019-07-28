@@ -22,4 +22,5 @@ require (
 	github.com/mattn/go-sqlite3 v1.10.0 // indirect
 	github.com/spf13/viper v1.3.1
 	google.golang.org/appengine v1.4.0 // indirect
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )

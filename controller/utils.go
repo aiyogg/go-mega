@@ -1,15 +1,20 @@
 package controller
 
 import (
+	"crypto/tls"
 	"errors"
 	"fmt"
-	"github.com/dota2mm/go-mega/vm"
 	"html/template"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"regexp"
 	"strconv"
+
+	"github.com/dota2mm/go-mega/config"
+	"github.com/dota2mm/go-mega/vm"
+	"gopkg.in/gomail.v2"
 )
 
 // PopulateTemplates func
@@ -112,6 +117,7 @@ func checkLen(fieldName, fieldValue string, minLen, maxLen int) string {
 	}
 	return ""
 }
+
 // 验证表单字段合法性
 func checkUsername(username string) string {
 	return checkLen("Username", username, 3, 20)
@@ -178,6 +184,7 @@ func checkRegister(username, email, pwd1, pwd2 string) []string {
 func addUser(username, password, email string) error {
 	return vm.AddUser(username, password, email)
 }
+
 //endregion
 
 //region Flash Message
@@ -216,4 +223,26 @@ func getPage(r *http.Request) int {
 	}
 	return page
 }
+
 //endregion
+
+// region Mail
+func sendMail(target, subject, content string) {
+	server, port, user, pwd := config.GetSMTPConfig()
+	d := gomail.NewDialer(server, port, user, pwd)
+	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
+
+	m := gomail.NewMessage()
+	m.SetHeader("From", user)
+	m.SetHeader("To", target)
+	m.SetAddressHeader("Cc", user, "admin")
+	m.SetHeader("Subject", subject)
+	m.SetBody("text/html", content)
+
+	if err := d.DialAndSend(m); err != nil {
+		log.Println("Email Error:", err)
+		return
+	}
+}
+
+// endregion

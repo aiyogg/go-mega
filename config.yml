@@ -6,3 +6,8 @@ mysql:
   port: 3306
   password: 123@abc
   user: root
+mail:
+  smtp: smtp.exmail.qq.com
+  smtp-port: 465
+  user: i@chenteng.me
+  password: password

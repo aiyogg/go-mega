@@ -35,3 +35,12 @@ func GetMysqlConnectingString() string {
 
 	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=true", usr, pwd, host, port, db, charset)
 }
+
+// GetSMTPConfig SMTP配置信息
+func GetSMTPConfig() (server string, port int, user, pwd string) {
+	server = viper.GetString("mail.smtp")
+	port = viper.GetInt("mail.smtp-port")
+	user = viper.GetString("mail.user")
+	pwd = viper.GetString("mail.password")
+	return
+}
