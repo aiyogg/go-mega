@@ -135,6 +135,15 @@ func GetUserByUsername(username string) (*User, error) {
 	return &user, nil
 }
 
+// GetUserByEmail 根据邮箱查用户
+func GetUserByEmail(email string) (*User, error) {
+	var user User
+	if err := db.Where("email=?", email).Find(&user).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
 // AddUser 添加一条用户记录
 func AddUser(username, password, email string) error {
 	user := User{Username: username, Email: email}

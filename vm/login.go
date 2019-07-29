@@ -1,8 +1,9 @@
 package vm
 
 import (
-	"github.com/dota2mm/go-mega/model"
 	"log"
+
+	"github.com/dota2mm/go-mega/model"
 )
 
 // LoginViewModel vm struct
