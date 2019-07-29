@@ -227,6 +227,19 @@ func getPage(r *http.Request) int {
 //endregion
 
 // region Mail
+func checkEmailExistRegister(email string) string {
+	if vm.CheckEmailExist(email) {
+		return fmt.Sprintf("Email has registered by others, please use another email.")
+	}
+	return ""
+}
+// checkEmailExist 确认是否是已经注册过的邮箱
+func checkEmailExist(email string) string {
+	if !vm.CheckEmailExist(email) {
+		return fmt.Sprintf("Email does not register yet. Please check email")
+	}
+	return ""
+}
 func sendMail(target, subject, content string) {
 	server, port, user, pwd := config.GetSMTPConfig()
 	d := gomail.NewDialer(server, port, user, pwd)
@@ -246,3 +259,27 @@ func sendMail(target, subject, content string) {
 }
 
 // endregion
+
+// region 重置密码校验
+
+func checkResetPasswordRequest(email string) []string {
+	var errs []string
+	if errCheck := checkEmail(email); len(errCheck) > 0 {
+		errs = append(errs, errCheck)
+	}
+	if errCheck := checkEmail(email); len(errCheck) > 0 {
+		errs = append(errs, errCheck)
+	}
+	return errs
+}
+func checkResetPassword(pwd1, pwd2 string) []string {
+	var errs []string
+	if pwd1 != pwd2 {
+		errs = append(errs, "Two password does not match")
+	}
+	if errCheck := checkPassword(pwd1); len(errCheck) > 0 {
+		errs = append(errs, errCheck)
+	}
+	return errs
+}
+// #endregion

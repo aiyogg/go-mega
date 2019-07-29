@@ -22,6 +22,7 @@ func (h home) registerRouters() {
 	r.HandleFunc("/follow/{username}", middleAuth(followHandler))
 	r.HandleFunc("/unfollow/{username}", middleAuth(unFollowHandler))
 	r.HandleFunc("/explore", exploreHandler)
+	r.HandleFunc("/reset_password_request", resetPasswordRequestHandler)
 
 	http.Handle("/", r)
 }
@@ -203,4 +204,20 @@ func exploreHandler(w http.ResponseWriter, r *http.Request) {
 	page := getPage(r)
 	v, _ := vop.GetVM(username, page, pageLimit)
 	templates[tpName].Execute(w, &v)
+}
+
+func resetPasswordRequestHandler(w http.ResponseWriter, r *http.Request) {
+	tpName := "reset_password_request.html"
+	vop := vm.ResetPasswordRequestViewModelOp{}
+	v := vop.GetVM()
+
+	if r.Method == http.MethodGet {
+		templates[tpName].Execute(w, &v)
+	}
+	if r.Method == http.MethodPost {
+		_ = r.ParseForm()
+		email := r.Form.Get("email")
+
+		errs := checkResetPasswordRequest(email)
+	}
 }
