@@ -2,6 +2,7 @@ package model
 
 import (
 	"fmt"
+	"github.com/dgrijalva/jwt-go"
 	"log"
 	"time"
 )
@@ -126,6 +127,31 @@ func (u *User) CreatePost(body string) error {
 	return db.Create(&post).Error
 }
 
+// GenerateToken 生成 jwt
+func (u *User) GenerateToken() (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"username": u.Username,
+		"exp":      time.Now().Add(time.Hour * 2).Unix(),
+	})
+	return token.SignedString([]byte("secret"))
+}
+
+func CheckToken(tokenString string) (string, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+
+		return []byte("secret"), nil
+	})
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		return claims["username"].(string), nil
+	} else {
+		return "", err
+	}
+}
+
 // GetUserByUsername 根据用户名查用户
 func GetUserByUsername(username string) (*User, error) {
 	var user User
@@ -173,5 +199,11 @@ func UpdateLastSeen(username string) error {
 // UpdateAboutMe 更新自我介绍
 func UpdateAboutMe(username, text string) error {
 	contents := map[string]interface{}{"about_me": text}
+	return UpdateUserByUsername(username, contents)
+}
+
+// UpdatePassword 更新密码
+func UpdatePassword(username, password string) error {
+	contents := map[string]interface{}{"password_hash": Md5(password)}
 	return UpdateUserByUsername(username, contents)
 }

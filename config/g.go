@@ -44,3 +44,9 @@ func GetSMTPConfig() (server string, port int, user, pwd string) {
 	pwd = viper.GetString("mail.password")
 	return
 }
+
+// GetServerURL
+func GetServerURL() (url string) {
+	url = viper.GetString("server.url")
+	return
+}

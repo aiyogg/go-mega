@@ -11,3 +11,5 @@ mail:
   smtp-port: 465
   user: i@chenteng.me
   password: password
+server:
+  url: 127.0.0.1:5000
