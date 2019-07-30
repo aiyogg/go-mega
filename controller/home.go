@@ -3,10 +3,11 @@ package controller
 import (
 	"bytes"
 	"fmt"
-	"github.com/gorilla/mux"
 	"html/template"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 
 	"github.com/dota2mm/go-mega/vm"
 )
@@ -25,7 +26,7 @@ func (h home) registerRouters() {
 	r.HandleFunc("/unfollow/{username}", middleAuth(unFollowHandler))
 	r.HandleFunc("/explore", exploreHandler)
 	r.HandleFunc("/reset_password_request", resetPasswordRequestHandler)
-	r.HandleFunc("/reset_password/{{token}}", resetPasswordHandler)
+	r.HandleFunc("/reset_password/{token}", resetPasswordHandler)
 
 	http.Handle("/", r)
 }
@@ -231,7 +232,7 @@ func resetPasswordRequestHandler(w http.ResponseWriter, r *http.Request) {
 			vopEmail := vm.EmailViewModelOp{}
 			vEmail := vopEmail.GetVM(email)
 			var contentByte bytes.Buffer
-			tpl, _ := template.ParseFiles("templates/email.html")
+			tpl, _ := template.ParseFiles("templates/content/email.html")
 			if err := tpl.Execute(&contentByte, &vEmail); err != nil {
 				log.Println("Get parse Template err", err)
 				w.Write([]byte("Error send email"))

@@ -24,7 +24,7 @@ func (*ResetPasswordRequestViewModelOp) GetVM() ResetPasswordRequestViewModel {
 func CheckEmailExist(email string) bool {
 	_, err := model.GetUserByEmail(email)
 	if err != nil {
-		log.Panicln("Can not find email", email)
+		log.Println("Can not find email", email)
 		return false
 	}
 	return true
