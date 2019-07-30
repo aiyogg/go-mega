@@ -267,7 +267,7 @@ func checkResetPasswordRequest(email string) []string {
 	if errCheck := checkEmail(email); len(errCheck) > 0 {
 		errs = append(errs, errCheck)
 	}
-	if errCheck := checkEmail(email); len(errCheck) > 0 {
+	if errCheck := checkEmailExist(email); len(errCheck) > 0 {
 		errs = append(errs, errCheck)
 	}
 	return errs
