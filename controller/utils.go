@@ -7,12 +7,10 @@ import (
 	"html/template"
 	"io/ioutil"
 	"log"
-	"math"
 	"net/http"
 	"os"
 	"regexp"
 	"strconv"
-	"time"
 
 	"github.com/dota2mm/go-mega/config"
 	"github.com/dota2mm/go-mega/vm"
@@ -287,24 +285,3 @@ func checkResetPassword(pwd1, pwd2 string) []string {
 }
 
 // #endregion
-
-// region Time format
-const (
-	minute  = 1
-	hour    = minute * 60
-	day     = hour * 24
-	month   = day * 30
-	year    = month * 365
-	quarter = year / 4
-)
-
-func round(f float64) int {
-	return int(math.Floor(f + .50))
-}
-
-// FromDuration returns a friendly string representing an approximation of the given duration
-func FromDuration(d time.Duration) string {
-	seconds := round(d.Seconds())
-}
-
-// endregion

@@ -11,6 +11,11 @@ type Post struct {
 	Timestamp *time.Time `sql:"DEFAULT:current_timestamp"`
 }
 
+// FormattedTimeAgo friendly string for post time
+func (p *Post) FormattedTimeAgo() string {
+	return FromTime(*p.Timestamp)
+}
+
 // GetPostsByUserID 获取用户文章
 func GetPostsByUserID(id int) (*[]Post, error) {
 	var posts []Post

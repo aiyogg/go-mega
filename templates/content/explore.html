@@ -9,6 +9,9 @@
             <p class="ui tiny image"><img src="{{.User.Avatar}}&s=36" alt="avatar"></p>
             <div class="content">
                 <a href="/user/{{.User.Username}}" class="header">{{.User.Username}}</a>
+                <div class="meta">
+                    <span class="cinema">{{.FormattedTimeAgo}}</span>
+                </div>
                 <div class="description">
                     <p>{{.Body}}</p>
                 </div>
