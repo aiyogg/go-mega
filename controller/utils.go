@@ -247,7 +247,7 @@ func sendMail(target, subject, content string) {
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 
 	m := gomail.NewMessage()
-	m.SetHeader("From", user)
+	m.SetAddressHeader("From", user, "GO-Mega")
 	m.SetHeader("To", target)
 	m.SetAddressHeader("Cc", user, "admin")
 	m.SetHeader("Subject", subject)
