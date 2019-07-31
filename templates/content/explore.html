@@ -23,12 +23,12 @@
 
     <div class="ui buttons">
         {{if gt .PrevPage 0}}
-        <a class="ui labeled icon button" href="/?page={{.PrevPage}}">
+        <a class="ui labeled icon button" href="/explore?page={{.PrevPage}}">
             <i class="left chevron icon"></i> Newer Posts
         </a>
         {{end}}
         {{if gt .NextPage 0}}
-        <a class="ui right labeled icon button" href="/?page={{.NextPage}}">
+        <a class="ui right labeled icon button" href="/explore?page={{.NextPage}}">
             Older Posts <i class="right chevron icon"></i>
         </a>
         {{end}}

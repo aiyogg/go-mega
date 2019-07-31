@@ -121,9 +121,6 @@ func FromTime(t time.Time) string {
 	var d time.Duration
 	var suffix string
 
-	fmt.Println("now :", now)
-	fmt.Println("time :", t)
-
 	if t.Before(now) {
 		d = now.Sub(t)
 		suffix = "ago"
