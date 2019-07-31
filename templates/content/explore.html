@@ -1,19 +1,33 @@
 {{define "content"}}
+    {{if .CurrentUser}}
     <h1>Hello, {{.CurrentUser}}!</h1>
-
-    {{range .Posts}}
-        <table>
-            <tr valign="top">
-                <td><img src="{{.User.Avatar}}&s=36"></td>
-                <td><a href="/user/{{.User.Username}}">{{ .User.Username }}</a> says:<br>{{ .Body }}</td>
-            </tr>
-        </table>
     {{end}}
 
-    {{ if gt .PrevPage 0 }}
-        <a href="/explore?page={{.PrevPage}}">Prev</a>
-    {{ end }}
-    {{ if gt .NextPage 0 }}
-        <a href="/explore?page={{.NextPage}}">Next</a>
-    {{ end }}
+    <div class="ui divided items">
+        {{range .Posts}}
+        <div class="item">
+            <p class="ui tiny image"><img src="{{.User.Avatar}}&s=36" alt="avatar"></p>
+            <div class="content">
+                <a href="/user/{{.User.Username}}" class="header">{{.User.Username}}</a>
+                <div class="description">
+                    <p>{{.Body}}</p>
+                </div>
+            </div>
+        </div>
+        {{end}}
+    </div>
+
+
+    <div class="ui buttons">
+        {{if gt .PrevPage 0}}
+        <a class="ui labeled icon button" href="/?page={{.PrevPage}}">
+            <i class="left chevron icon"></i> Newer Posts
+        </a>
+        {{end}}
+        {{if gt .NextPage 0}}
+        <a class="ui right labeled icon button" href="/?page={{.NextPage}}">
+            Older Posts <i class="right chevron icon"></i>
+        </a>
+        {{end}}
+    </div>
 {{end}}

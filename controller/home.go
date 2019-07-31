@@ -16,7 +16,8 @@ type home struct{}
 
 func (h home) registerRouters() {
 	r := mux.NewRouter()
-	r.HandleFunc("/", middleAuth(indexHander))
+	r.NotFoundHandler = http.HandlerFunc(notFoundHandler)
+
 	r.HandleFunc("/login", loginHander)
 	r.HandleFunc("/register", registerHandler)
 	r.HandleFunc("/logout", middleAuth(logoutHandler))
@@ -27,6 +28,8 @@ func (h home) registerRouters() {
 	r.HandleFunc("/explore", exploreHandler)
 	r.HandleFunc("/reset_password_request", resetPasswordRequestHandler)
 	r.HandleFunc("/reset_password/{token}", resetPasswordHandler)
+	r.HandleFunc("/404", notFoundHandler)
+	r.HandleFunc("/", middleAuth(indexHander))
 
 	http.Handle("/", r)
 }
@@ -77,7 +80,7 @@ func loginHander(w http.ResponseWriter, r *http.Request) {
 			v.AddError("username must longer than 3 characters")
 		}
 		if len(password) < 6 {
-			v.AddError("username must longer than 6 characters")
+			v.AddError("password must longer than 6 characters")
 		}
 
 		if !vm.CheckLogin(username, password) {
@@ -232,7 +235,7 @@ func resetPasswordRequestHandler(w http.ResponseWriter, r *http.Request) {
 			vopEmail := vm.EmailViewModelOp{}
 			vEmail := vopEmail.GetVM(email)
 			var contentByte bytes.Buffer
-			tpl, _ := template.ParseFiles("templates/content/email.html")
+			tpl, _ := template.ParseFiles("templates/email.html")
 			if err := tpl.Execute(&contentByte, &vEmail); err != nil {
 				log.Println("Get parse Template err", err)
 				w.Write([]byte("Error send email"))
@@ -280,4 +283,11 @@ func resetPasswordHandler(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 		}
 	}
+}
+
+func notFoundHandler(w http.ResponseWriter, r *http.Request) {
+	flash := getFlash(w, r)
+	message := vm.NotFoundMessage{Flash: flash}
+	tpl, _ := template.ParseFiles("templates/404.html")
+	tpl.Execute(w, &message)
 }

@@ -1,17 +1,22 @@
 {{define "content"}}
-<h1>登录</h1>
-<form action="/login" method="post" name="login">
-    <p><input type="text" name="username" value="" placeholder="请输入用户名"></p>
-    <p><input type="password" name="password" placeholder="请输入密码"></p>
-    <p><input type="submit" name="submit" value="登录"></p>
-</form>
-<p>没有账号？<a href="/register">去注册</a></p>
-<p>忘记密码？<a href="/reset_password_request">去重置</a></p>
+<div class="ui form">
+    <h1 class="ui header">Login</h1>
+    <form action="/login" method="post" name="login">
+        <p class="field"><label>Username</label><input type="text" name="username" value="" placeholder="Username"></p>
+        <p class="field"><label>Password</label><input type="password" name="password" placeholder="Password"></p>
+        <p><input class="ui button primary basic" type="submit" name="submit" value="Login"></p>
+    </form>
+
+    <p>New User? <a href="/register">Click to Register!</a></p>
+    <p>Forget Password? <a href="/reset_password_request">Click to Reset Password!</a></p>
+</div>
 {{if .Errs}}
-<ul>
-    {{range .Errs}}
-    <li>{{.}}</li>
-    {{end}}
-</ul>
+<div class="ui message error">
+    <ul class="list">
+        {{range .Errs}}
+        <li>{{.}}</li>
+        {{end}}
+    </ul>
+</div>
 {{end}}
 {{end}}

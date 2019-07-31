@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>404 - Not-Found</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <style>
+    .container {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="ui icon header">
+            <i class="street view icon"></i>
+            <div class="content">
+                {{if .Flash}}
+                <p>{{.Flash}}</p>
+                {{else}}
+                <p>Page Not Found</p>
+                {{end}}
+                <div class="sub header">Sorry, but the page you were trying to view does not exist.</div>
+            </div>
+        </h2>
+    </div>
+</body>
+</html>

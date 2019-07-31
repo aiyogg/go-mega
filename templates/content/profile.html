@@ -1,47 +1,63 @@
 {{define "content"}}
-    <table>
-        <tr valign="top">
-            <td><img src="{{.ProfileUser.Avatar}}&s=128"></td>
-            <td>
-                <h1>User: {{.ProfileUser.Username}}</h1>
-                {{if .ProfileUser.AboutMe}}
-                    <p>{{ .ProfileUser.AboutMe }}</p>
-                {{end}}
-
+    <div class="ui items">
+        <div class="item">
+            <div class="image">
+                <img src="{{.ProfileUser.Avatar}}&s=128">
+            </div>
+            <div class="content">
+                <div class="header">User: {{.ProfileUser.Username}}</div>
                 {{if .ProfileUser.LastSeen}}
-                    <p>Last seen on: {{ .ProfileUser.LastSeen }}</p>
+                <div class="meta">
+                    <span class="cinema">Last seen on: {{ .ProfileUser.LastSeen }}</span>
+                </div>
+                {{end}}
+                {{if .ProfileUser.AboutMe}}
+                <div class="description">
+                    <p>{{ .ProfileUser.AboutMe }}</p>
+                </div>
                 {{end}}
 
+                <div class="extra">
                 {{if .Editable}}
-                    <p>
-                        <a href="/profile_edit">Edit your profile</a>
-                    </p>
+                <a class="ui labele button" href="/profile_edit">Edit your profile</a>
                 {{else}}
                     {{if .IsFollow}}
-                        <p><a href="/unfollow/{{.ProfileUser.Username}}">Unfollow</a></p>
+                    <a class="ui labele negative basic button " href="/unfollow/{{.ProfileUser.Username}}">Unfollow</a>
                     {{else}}
-                        <p><a href="/follow/{{.ProfileUser.Username}}">Follow</a></p>
+                    <a class="ui labele positive basic button " href="/follow/{{.ProfileUser.Username}}">Follow</a>
                     {{end}}
                 {{end}}
-            </td>
-        </tr>
-    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <hr>
 
-    {{range .Posts}}
-    <table>
-        <tr valign="top">
-            <td><img src="{{.User.Avatar}}&s=36"></td>
-            <td>{{ .User.Username }} says:<br>{{ .Body }}</td>
-        </tr>
-    </table>
-    {{end}}
+    <div class="ui divided items">
+        {{range .Posts}}
+        <div class="item">
+            <p class="ui tiny image"><img src="{{.User.Avatar}}&s=36" alt="avatar"></p>
+            <div class="content">
+                <a href="/user/{{.User.Username}}" class="header">{{.User.Username}}</a>
+                <div class="description">
+                    <p>{{.Body}}</p>
+                </div>
+            </div>
+        </div>
+        {{end}}
+    </div>
 
-    {{if gt .PrevPage 0}}
-        <a href="/user/{{.ProfileUser.Username}}?page={{.PrevPage}}">Prev</a>
-    {{end}}
-    {{if gt .NextPage 0}}
-        <a href="/user/{{.ProfileUser.Username}}?page={{.NextPage}}">Next</a>
-    {{end}}
+    <div class="ui buttons">
+        {{if gt .PrevPage 0}}
+        <a class="ui labeled icon button" href="/user/{{.ProfileUser.Username}}?page={{.PrevPage}}">
+            <i class="left chevron icon"></i> Newer Posts
+        </a>
+        {{end}}
+        {{if gt .NextPage 0}}
+        <a class="ui right labeled icon button" href="/user/{{.ProfileUser.Username}}?page={{.NextPage}}">
+            Older Posts <i class="right chevron icon"></i>
+        </a>
+        {{end}}
+    </div>
 {{end}}

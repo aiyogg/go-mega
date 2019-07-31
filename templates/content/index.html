@@ -1,28 +1,43 @@
 {{define "content"}}
     <h1>Hello, {{.CurrentUser}}</h1>
 
-    <form method="post" action="/">
-        <p><textarea name="body" cols="80" rows="3" placeholder="sat something"></textarea></p>
-        <p><input type="submit" name="submit" value="Submit"></p>
+    <div class="ui form">
+        <form method="post" action="/">
+            <p class="field"><textarea name="body" cols="80" rows="3" placeholder="sat something"></textarea></p>
+            <p><input class="ui button primary basic" type="submit" name="submit" value="Submit"></p>
 
-        {{if .Flash}}
-            <span style="color: red">{{.Flash}}</span>
+            {{if .Flash}}
+            <div class="ui negative message">
+                <span>{{.Flash}}</span>
+            </div>
+            {{end}}
+        </form>
+    </div>
+
+    <div class="ui divided items">
+        {{range .Posts}}
+        <div class="item">
+            <p class="ui tiny image"><img src="{{.User.Avatar}}&s=36" alt="avatar"></p>
+            <div class="content">
+                <a href="/user/{{.User.Username}}" class="header">{{.User.Username}}</a>
+                <div class="description">
+                    <p>{{.Body}}</p>
+                </div>
+            </div>
+        </div>
         {{end}}
-    </form>
+    </div>
 
-    {{range .Posts}}
-        <table>
-            <tr valign="top">
-                <td><img src="{{.User.Avatar}}&s=36" alt="avatar"></td>
-                <td><a href="/user/{{.User.Username}}">{{.User.Username}}</a> says: <br>{{.Body}}</td>
-            </tr>
-        </table>
-    {{end}}
-
-    {{if gt .PrevPage 0}}
-        <a href="/?page={{.PrevPage}}">Prev</a>
-    {{end}}
-    {{if gt .NextPage 0}}
-        <a href="/?page={{.NextPage}}">Next</a>
-    {{end}}
+    <div class="ui buttons">
+        {{if gt .PrevPage 0}}
+        <a class="ui labeled icon button" href="/?page={{.PrevPage}}">
+            <i class="left chevron icon"></i> Newer Posts
+        </a>
+        {{end}}
+        {{if gt .NextPage 0}}
+        <a class="ui right labeled icon button" href="/?page={{.NextPage}}">
+            Older Posts <i class="right chevron icon"></i>
+        </a>
+        {{end}}
+    </div>
 {{end}}

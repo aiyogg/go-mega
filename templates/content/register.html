@@ -1,20 +1,23 @@
 {{define "content"}}
-    <h1>注册</h1>
+<div class="ui form">
+    <h1 class="ui header">Register</h1>
     <form action="/register" method="post" name="register">
-        <p><input type="text" name="username" value="" placeholder="用户名"></p>
-        <p><input type="text" name="email" value="" placeholder="邮箱"></p>
-        <p><input type="password" name="pwd1" value="" placeholder="请输入密码"></p>
-        <p><input type="password" name="pwd2" value="" placeholder="再次输入密码"></p>
-        <p><input type="submit" name="submit" value="注册"></p>
+        <p class="field"><label>Username</label><input type="text" name="username" value="" placeholder="Username"></p>
+        <p class="field"><label>Email</label><input type="text" name="email" value="" placeholder="Email"></p>
+        <p class="field"><label>Password</label><input type="password" name="pwd1" value="" placeholder="Password"></p>
+        <p class="field"><label>Password</label><input type="password" name="pwd2" value="" placeholder="Recheck Password"></p>
+        <p><input class="ui button primary basic" type="submit" name="submit" value="Register"></p>
     </form>
 
-    <p>已经有账号? <a href="/login">去登录</a></p>
-
-    {{if .Errs}}
-        <ul>
-            {{range .Errs}}
-                <li>{{.}}</li>
-            {{end}}
-        </ul>
-    {{end}}
+    <p>Have account? <a href="/login">Click to Login!</a></p>
+</div>
+{{if .Errs}}
+<div class="ui message error">
+    <ul>
+        {{range .Errs}}
+            <li>{{.}}</li>
+        {{end}}
+    </ul>
+</div>
+{{end}}
 {{end}}

@@ -9,18 +9,31 @@
     {{else}}
     <title>go-mega</title>
     {{end}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <style>
+        .container {
+            max-width: 960px;
+        }
+    </style>
 </head>
 <body>
-    <div>Blog: 
-        <a href="/">Home</a>
-        <a href="/explore">Explore</a>
-        {{if .CurrentUser}}
-        <a href="/user/{{.CurrentUser}}">Profile</a>
-        <a href="/logout">Logout</a>
-        {{else}}
-        <a href="/login">Login</a>
-        {{end}}
+    <div class="ui pointing menu">
+        <a class="item" href="/">Home</a>
+        <a class="item" href="/explore">Explore</a>
+
+        <div class="right menu">
+            {{if .CurrentUser}}
+            <a class="item" href="/user/{{.CurrentUser}}">Profile</a>
+            <a class="item" href="/logout">Logout</a>
+            {{else}}
+            <a class="item" href="/login">Login</a>
+            {{end}}
+        </div>
     </div>
-    {{template "content" .}}
+    <div class="ui container">
+        {{template "content" .}}
+    </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
 </html>
