@@ -8,7 +8,7 @@
                 <div class="header">User: {{.ProfileUser.Username}}</div>
                 {{if .ProfileUser.LastSeen}}
                 <div class="meta">
-                    <span class="cinema">Last seen on: {{ .ProfileUser.LastSeen }}</span>
+                    <span class="cinema">Last seen on: {{ .ProfileUser.FormattedLastSeen }}</span>
                 </div>
                 {{end}}
                 {{if .ProfileUser.AboutMe}}

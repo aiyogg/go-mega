@@ -2,9 +2,10 @@ package model
 
 import (
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
 	"log"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
 )
 
 // User model
@@ -136,6 +137,12 @@ func (u *User) GenerateToken() (string, error) {
 	return token.SignedString([]byte("secret"))
 }
 
+// FormattedLastSeen 格式化时间
+func (u *User) FormattedLastSeen() string {
+	return u.LastSeen.Format("2006-01-02 15:04:05")
+}
+
+// CheckToken jwt校验
 func CheckToken(tokenString string) (string, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
