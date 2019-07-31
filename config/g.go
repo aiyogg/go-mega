@@ -33,7 +33,7 @@ func GetMysqlConnectingString() string {
 	db := viper.GetString("mysql.db")
 	charset := viper.GetString("mysql.charset")
 
-	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=true", usr, pwd, host, port, db, charset)
+	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=true&loc=Local", usr, pwd, host, port, db, charset)
 }
 
 // GetSMTPConfig SMTP配置信息
