@@ -1,8 +1,8 @@
 {{define "content"}}
     <div class="ui items">
         <div class="item">
-            <div class="image">
-                <img src="{{.ProfileUser.Avatar}}&s=128">
+            <div class="ui small image">
+                <img src="{{.ProfileUser.Avatar}}&s=150">
             </div>
             <div class="content">
                 <div class="header">User: {{.ProfileUser.Username}}</div>
@@ -37,7 +37,7 @@
     <div class="ui divided items">
         {{range .Posts}}
         <div class="item">
-            <p class="ui tiny image"><img src="{{.User.Avatar}}&s=36" alt="avatar"></p>
+            <p class="ui tiny image"><img src="{{.User.Avatar}}&s=80" alt="avatar"></p>
             <div class="content">
                 <a href="/user/{{.User.Username}}" class="header">{{.User.Username}}</a>
                 <div class="meta">
