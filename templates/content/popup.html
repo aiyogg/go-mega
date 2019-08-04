@@ -1,0 +1,33 @@
+<div class="ui flowing popup top left transition hidden">
+    <div class="ui cards">
+        <div class="card">
+            <div class="content">
+                <img class="right floated mini ui image" src="{{.ProfileUser.Avatar}}&s=80">
+                <div class="header">
+                    {{.ProfileUser.Username}}
+                </div>
+                {{if .ProfileUser.LastSeen}}
+                    <div class="meta">
+                        <span class="cinema">Last seen on: {{ .ProfileUser.FormattedLastSeen }}</span>
+                    </div>
+                {{end}}
+                {{if .ProfileUser.AboutMe}}
+                    <div class="description">
+                        <p>{{ .ProfileUser.AboutMe }}</p>
+                    </div>
+                {{end}}
+            </div>
+            <div class="extra content">
+                {{if .Editable}}
+                    <a class="ui labele button" href="/profile_edit">Edit your profile</a>
+                {{else}}
+                    {{if .IsFollow}}
+                        <a class="ui labele negative basic button " href="/unfollow/{{.ProfileUser.Username}}">Unfollow</a>
+                    {{else}}
+                        <a class="ui labele positive basic button " href="/follow/{{.ProfileUser.Username}}">Follow</a>
+                    {{end}}
+                {{end}}
+            </div>
+        </div>
+    </div>
+</div>

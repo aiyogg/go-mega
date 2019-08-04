@@ -5,12 +5,12 @@ import "github.com/dota2mm/go-mega/model"
 // ProfileViewModel struct
 type ProfileViewModel struct {
 	BaseViewModel
-	Posts       []model.Post
-	Editable    bool
-	IsFollow bool
+	Posts          []model.Post
+	Editable       bool
+	IsFollow       bool
 	FollowersCount int
 	FollowingCount int
-	ProfileUser model.User
+	ProfileUser    model.User
 	BasePageViewModel
 }
 
@@ -26,7 +26,7 @@ func (ProfileViewModelOp) GetVM(sUser, pUser string, page, limit int) (ProfileVi
 	}
 	posts, total, _ := model.GetPostsByUserIDPageAndLimit(u.ID, page, limit)
 	v.ProfileUser = *u
-	v.Editable = (sUser == pUser)
+	v.Editable = sUser == pUser
 	v.SetBasePageViewModel(total, page, limit)
 
 	if !v.Editable {
@@ -36,6 +36,25 @@ func (ProfileViewModelOp) GetVM(sUser, pUser string, page, limit int) (ProfileVi
 	v.FollowingCount = u.FollowingCount()
 
 	v.Posts = *posts
+	v.SetCurrentUser(sUser)
+	return v, nil
+}
+
+// GetPopupVM profile弹出框
+func (ProfileViewModelOp) GetPopupVM(sUser, pUser string) (ProfileViewModel, error) {
+	v := ProfileViewModel{}
+	v.SetTitle("Profile")
+	u, err := model.GetUserByUsername(pUser)
+	if err != nil {
+		return v, err
+	}
+	v.ProfileUser = *u
+	v.Editable = sUser == pUser
+	if !v.Editable {
+		v.IsFollow = u.IsFollowedByUser(sUser)
+	}
+	v.FollowersCount = u.FollowersCount()
+	v.FollowingCount = u.FollowingCount()
 	v.SetCurrentUser(sUser)
 	return v, nil
 }
@@ -57,4 +76,3 @@ func UnFollow(a, b string) error {
 	}
 	return u.Unfollow(b)
 }
-

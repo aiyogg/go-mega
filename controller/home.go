@@ -30,6 +30,7 @@ func (h home) registerRouters() {
 	r.HandleFunc("/reset_password/{token}", resetPasswordHandler)
 	r.HandleFunc("/404", notFoundHandler)
 	r.HandleFunc("/", middleAuth(indexHander))
+	r.HandleFunc("/user/{username}/popup", popupHandler)
 
 	http.Handle("/", r)
 }
@@ -149,6 +150,21 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	templates[tpName].Execute(w, &v)
+}
+
+func popupHandler(w http.ResponseWriter, r *http.Request) {
+	tpName := "popup.html"
+	vars := mux.Vars(r)
+	pUser := vars["username"]
+	sUser, _ := getSessionUser(r)
+	vop := vm.ProfileViewModelOp{}
+	v, err := vop.GetPopupVM(sUser, pUser)
+	if err != nil {
+		msg := fmt.Sprintf("User (%s) does not exist", pUser)
+		_, _ = w.Write([]byte(msg))
+		return
+	}
+	_ = templates[tpName].Execute(w, &v)
 }
 
 func profileEditHandler(w http.ResponseWriter, r *http.Request) {
