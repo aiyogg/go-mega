@@ -33,15 +33,54 @@
     <div class="ui container">
         {{template "content" .}}
     </div>
+    <div id="popup" class="ui flowing popup transition">
+        <div class="content"></div>
+        <div class="card" style="box-shadow: none; min-width: 290px;">
+            <div class="ui placeholder">
+                <div class="image header">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+                <div class="paragraph">
+                    <div class="medium line"></div>
+                    <div class="short line"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
 <script>
     $(function () {
-        $('.profile_popup').popup({
-            popup: $('#popup'),
-            position: 'bottom left'
-        });
+        var timer = null
+        var xhr = null
+        $('.profile_popup').hover(function (e) {
+            var elem = $(e.currentTarget)
+            timer = setTimeout(function () {
+                timer = null
+                xhr = $.ajax('/user/' + elem.data('user') + '/popup').done(function (data) {
+                    xhr = null
+                    $('#popup .content').html(data).siblings().hide()
+                    elem.popup({
+                        trigger: 'manual',
+                        popup: $('#popup'),
+                        position: 'bottom left'
+                    }).popup('show')
+                })
+            }, 500)
+        }, function (e) {
+            var elem = $(e.currentTarget)
+            if (timer) {
+                clearTimeout(timer)
+                timer = null
+            } else if (xhr) {
+                xhr.abort()
+                xhr = null
+            }
+            $('#popup .content').html('').siblings().show()
+            elem.popup('hide')
+        })
     })
 </script>
 </html>

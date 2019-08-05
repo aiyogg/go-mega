@@ -8,7 +8,7 @@
         <div class="item">
             <p class="ui tiny image"><img src="{{.User.Avatar}}&s=80" alt="avatar"></p>
             <div class="content">
-                <a href="/user/{{.User.Username}}" class="header">{{.User.Username}}</a>
+                <a href="/user/{{.User.Username}}" data-user="{{.User.Username}}" class="header profile_popup">{{.User.Username}}</a>
                 <div class="meta">
                     <span class="cinema">{{.FormattedTimeAgo}}</span>
                 </div>
